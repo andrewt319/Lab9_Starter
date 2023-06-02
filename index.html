@@ -86,22 +86,111 @@
       <button>Trigger a Global Error</button>
     </section>
   </main>
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "bf757ba577cf44f3bed59f6e92587835"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
+                        
 
   <script>
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
-      e.preventDefault();
-      let output = document.querySelector('output');
-      let firstNum = document.querySelector('#first-num').value;
-      let secondNum = document.querySelector('#second-num').value;
-      let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      try {
+        e.preventDefault();
+        let output = document.querySelector('output');
+        let firstNum = document.querySelector('#first-num').value;
+        let secondNum = document.querySelector('#second-num').value;
+        let operator = document.querySelector('#operator').value;
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      } catch(except) {
+        console.error('error')
+        throw new MyError("you had some inappropriate input")
+      } finally {
+        console.log('Done')
+      }
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
     // You may move this JS to another file if you wish
+
+    errorBtns[0].addEventListener('click', () => {
+      console.log('console.log');
+    })
+
+    errorBtns[1].addEventListener('click', () => {
+      console.error('ERROR!');
+    })
+
+    errorBtns[2].addEventListener('click', () => {
+      console.count('Count');
+    })
+
+    errorBtns[3].addEventListener('click', () => {
+      console.warn('WARNING');
+    })
+
+    errorBtns[4].addEventListener('click', () => {
+      let num = 2;
+      const errorMsg = '2 % 2 should equal 0';
+      console.assert(num % 2 === 1, {num, errorMsg});
+    })
+
+    errorBtns[5].addEventListener('click', () => {
+      console.clear();
+    })
+
+    errorBtns[6].addEventListener('click', () => {
+      console.dir(document.location);
+    })
+
+    errorBtns[7].addEventListener('click', () => {
+      console.dirxml(document);
+    })
+
+    errorBtns[8].addEventListener('click', () => {
+      console.group();
+    })
+
+    errorBtns[9].addEventListener('click', () => {
+      console.groupEnd();
+    })
+
+    errorBtns[10].addEventListener('click', () => {
+      console.table(
+        [['a', 'b', 'c'],
+        ['d', 'e', 'f'],
+        ['g', 'h', 'i']]
+      );
+    })
+
+    errorBtns[11].addEventListener('click', () => {
+      console.time();
+    })
+
+    errorBtns[12].addEventListener('click', () => {
+      console.timeEnd();
+    })
+
+    errorBtns[13].addEventListener('click', () => {
+      console.trace();
+    })
+
+    errorBtns[14].addEventListener('click', () => {
+      reportError('ERROR');
+    })
+    class MyError extends Error {
+    constructor(message) {
+      super("MY CUSTOM ERROR: " + message);
+      this.name = this.constructor.name;
+    }
+}
+
+    TrackJS.track('Testing TrackJS!');
   </script>
 </body>
 
